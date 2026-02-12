@@ -3,85 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تهنئة رمضان - اختر قالبك</title>
+    <title>تهنئة رمضان المبارك</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #f0f2f5; font-family: 'Cairo', sans-serif; text-align: center; padding: 10px; }
-        .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .template-selector { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
-        .template-option { width: 100px; cursor: pointer; border: 3px solid transparent; border-radius: 10px; transition: 0.3s; opacity: 0.6; }
-        .template-option.selected { border-color: #4a5578; opacity: 1; transform: scale(1.1); }
-        .template-option img { width: 100%; border-radius: 7px; }
-        input { width: 90%; padding: 15px; margin: 10px 0; border-radius: 10px; border: 2px solid #e0e0e0; text-align: center; font-size: 18px; }
+        body { background-color: #f0f2f5; font-family: 'Cairo', sans-serif; text-align: center; padding: 10px; margin: 0; }
+        .container { max-width: 450px; margin: 20px auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; }
+        input { width: 90%; padding: 15px; margin: 20px 0; border-radius: 10px; border: 2px solid #e0e0e0; text-align: center; font-size: 18px; outline: none; }
         button { background: #4a5578; color: white; padding: 15px; border: none; border-radius: 10px; cursor: pointer; width: 100%; font-size: 18px; font-weight: bold; }
-        #result img { max-width: 100%; margin-top: 20px; border-radius: 10px; }
-        .download-btn { display: inline-block; margin-top: 15px; background: #27ae60; color: white; text-decoration: none; padding: 10px 20px; border-radius: 8px; }
+        #result img { max-width: 100%; margin-top: 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .download-btn { display: inline-block; margin-top: 15px; background: #27ae60; color: white; text-decoration: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; }
+        
+        /* تنسيق صندوق الدعم */
+        .support-box { margin-top: 25px; padding: 15px; background: #fdfaf0; border: 2px dashed #27ae60; border-radius: 15px; display: none; }
+        .support-box p { margin: 5px 0; font-size: 14px; color: #2c3e50; }
+        .qr-img { width: 160px; height: 160px; margin: 10px auto; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        
         canvas { display: none; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2>🌙 اختر قالب التهنئة</h2>
-        <div class="template-selector">
-            <div class="template-option selected" onclick="selectTemplate('ramadan.jpg', this)">
-                <img src="ramadan.jpg">
-                <span>قالب 1</span>
-            </div>
-            <div class="template-option" onclick="selectTemplate('ramadan2.jpg', this)">
-                <img src="ramadan2.jpg">
-                <span>قالب 2</span>
-            </div>
-        </div>
-
-        <input type="text" id="userName" placeholder="اكتب اسمك هنا..." maxlength="25">
+        <h2>🌙 صمم تهنئتك لرمضان</h2>
+        <p>اكتب اسمك ليتم إضافته للقالب</p>
+        
+        <input type="text" id="userName" placeholder="أدخل اسمك هنا..." maxlength="25">
         <button onclick="createCard()">صمم بطاقتك الآن</button>
+
         <div id="result"></div>
+
+        <div id="supportSection" class="support-box">
+            <p style="font-weight: bold; color: #27ae60;">🌟 أعجبتك البطاقة؟</p>
+            <p>يمكنك دعم استمرار الموقع بـ <b>1 ريال</b></p>
+            <img src="myqr.png" class="qr-img" alt="QR Code">
+            <p style="font-size: 12px;">امسح الباركود عبر تطبيقك البنكي ❤️</p>
+        </div>
     </div>
 
     <canvas id="cardCanvas"></canvas>
 
     <script>
-        let selectedImgSrc = 'ramadan.jpg';
-
-        function selectTemplate(imgName, element) {
-            selectedImgSrc = imgName;
-            document.querySelectorAll('.template-option').forEach(el => el.classList.remove('selected'));
-            element.classList.add('selected');
-        }
-
         async function createCard() {
             const name = document.getElementById('userName').value;
             const myApiUrl = "https://sheetdb.io/api/v1/o9rk5zcf0ti1x"; 
 
-            if (!name) { alert("لطفاً اكتب الاسم"); return; }
+            if (!name) {
+                alert("لطفاً اكتب الاسم");
+                return;
+            }
 
+            // إرسال البيانات لجدول جوجل
             fetch(myApiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ "الاسم": name, "القالب": selectedImgSrc, "التاريخ": new Date().toLocaleString('ar-EG') })
+                body: JSON.stringify({ "الاسم": name, "التاريخ": new Date().toLocaleString('ar-EG') })
             }).catch(err => console.log("Sent"));
 
             const canvas = document.getElementById('cardCanvas');
             const ctx = canvas.getContext('2d');
             const img = new Image();
             
-            img.src = selectedImgSrc; 
+            // القالب الأساسي
+            img.src = 'ramadan.jpg'; 
             
             img.onload = function() {
                 canvas.width = img.width;
                 canvas.height = img.height;
                 ctx.drawImage(img, 0, 0);
                 
+                // إعدادات الخط (أبيض بحدود سوداء خفيفة)
                 ctx.font = 'bold 55px Cairo'; 
                 ctx.textAlign = 'center';
                 
-                // إضافة حدود سوداء خفيفة جداً
+                // رسم الحدود السوداء (Stroke)
                 ctx.strokeStyle = 'black';
-                ctx.lineWidth = 1; // أقل درجة حدود
+                ctx.lineWidth = 1;
                 ctx.strokeText(name, canvas.width / 2, canvas.height * 0.90);
                 
-                // تعبئة الاسم باللون الأبيض
+                // رسم الاسم بالأبيض (Fill)
                 ctx.fillStyle = 'white'; 
                 ctx.fillText(name, canvas.width / 2, canvas.height * 0.90); 
                 
@@ -89,8 +89,11 @@
                 document.getElementById('result').innerHTML = `
                     <img src="${finalImage}">
                     <br>
-                    <a href="${finalImage}" download="Ramadan_Card.png" class="download-btn">⬇️ حفظ الصورة</a>
+                    <a href="${finalImage}" download="Ramadan_Card.png" class="download-btn">⬇️ حفظ الصورة في جهازك</a>
                 `;
+
+                // إظهار صندوق الدعم بعد التصميم
+                document.getElementById('supportSection').style.display = 'block';
             };
         }
     </script>
