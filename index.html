@@ -82,7 +82,6 @@
     <script>
         async function createCard() {
             const name = document.getElementById('userName').value;
-            // رابط الـ API الخاص بك
             const myApiUrl = "https://sheetdb.io/api/v1/o9rk5zcf0ti1x"; 
 
             if (!name) {
@@ -90,7 +89,6 @@
                 return;
             }
 
-            // إرسال الاسم لجدول Google Sheets
             fetch(myApiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -101,7 +99,6 @@
             const ctx = canvas.getContext('2d');
             const img = new Image();
             
-            // تأكد أن الصورة المرفوعة على GitHub اسمها ramadan.jpg
             img.src = 'ramadan.jpg'; 
             
             img.onload = function() {
@@ -110,12 +107,12 @@
 
                 ctx.drawImage(img, 0, 0);
                 
-                // تنسيق الخط: اللون أبيض، الخط عريض، الموقع منخفض
-                ctx.font = 'bold 65px Cairo'; 
+                // تم تصغير الخط هنا إلى 55px
+                ctx.font = 'bold 55px Cairo'; 
                 ctx.fillStyle = 'white'; 
                 ctx.textAlign = 'center';
                 
-                // تم ضبط الارتفاع ليكون في أسفل الصورة (90% من الطول)
+                // بقاء الموقع عند 90% من طول الصورة
                 ctx.fillText(name, canvas.width / 2, canvas.height * 0.90); 
                 
                 const finalImage = canvas.toDataURL('image/png');
