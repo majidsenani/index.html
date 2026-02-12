@@ -8,17 +8,14 @@
     <style>
         body { background-color: #f0f2f5; font-family: 'Cairo', sans-serif; text-align: center; padding: 10px; margin: 0; }
         .container { max-width: 450px; margin: 20px auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        h2 { color: #2c3e50; }
-        input { width: 90%; padding: 15px; margin: 20px 0; border-radius: 10px; border: 2px solid #e0e0e0; text-align: center; font-size: 18px; outline: none; }
-        button { background: #4a5578; color: white; padding: 15px; border: none; border-radius: 10px; cursor: pointer; width: 100%; font-size: 18px; font-weight: bold; }
+        h2 { color: #2c3e50; margin-bottom: 10px; }
+        p { color: #666; margin-bottom: 20px; }
+        input { width: 90%; padding: 15px; margin: 10px 0; border-radius: 10px; border: 2px solid #e0e0e0; text-align: center; font-size: 18px; outline: none; }
+        input:focus { border-color: #4a5578; }
+        button { background: #4a5578; color: white; padding: 15px; border: none; border-radius: 10px; cursor: pointer; width: 100%; font-size: 18px; font-weight: bold; transition: 0.3s; }
+        button:active { transform: scale(0.98); }
         #result img { max-width: 100%; margin-top: 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .download-btn { display: inline-block; margin-top: 15px; background: #27ae60; color: white; text-decoration: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; }
-        
-        /* تنسيق صندوق الدعم */
-        .support-box { margin-top: 25px; padding: 15px; background: #fdfaf0; border: 2px dashed #27ae60; border-radius: 15px; display: none; }
-        .support-box p { margin: 5px 0; font-size: 14px; color: #2c3e50; }
-        .qr-img { width: 160px; height: 160px; margin: 10px auto; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        
         canvas { display: none; }
     </style>
 </head>
@@ -32,13 +29,6 @@
         <button onclick="createCard()">صمم بطاقتك الآن</button>
 
         <div id="result"></div>
-
-        <div id="supportSection" class="support-box">
-            <p style="font-weight: bold; color: #27ae60;">🌟 أعجبتك البطاقة؟</p>
-            <p>يمكنك دعم استمرار الموقع بـ <b>1 ريال</b></p>
-            <img src="myqr.png" class="qr-img" alt="QR Code">
-            <p style="font-size: 12px;">امسح الباركود عبر تطبيقك البنكي ❤️</p>
-        </div>
     </div>
 
     <canvas id="cardCanvas"></canvas>
@@ -53,7 +43,7 @@
                 return;
             }
 
-            // إرسال البيانات لجدول جوجل
+            // إرسال البيانات لجدول جوجل للتوثيق
             fetch(myApiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -64,7 +54,7 @@
             const ctx = canvas.getContext('2d');
             const img = new Image();
             
-            // القالب الأساسي
+            // تأكد أن الصورة اسمها ramadan.jpg في GitHub
             img.src = 'ramadan.jpg'; 
             
             img.onload = function() {
@@ -76,12 +66,12 @@
                 ctx.font = 'bold 55px Cairo'; 
                 ctx.textAlign = 'center';
                 
-                // رسم الحدود السوداء (Stroke)
+                // 1. رسم الحدود السوداء (رقيقة جداً)
                 ctx.strokeStyle = 'black';
                 ctx.lineWidth = 1;
                 ctx.strokeText(name, canvas.width / 2, canvas.height * 0.90);
                 
-                // رسم الاسم بالأبيض (Fill)
+                // 2. رسم الاسم باللون الأبيض
                 ctx.fillStyle = 'white'; 
                 ctx.fillText(name, canvas.width / 2, canvas.height * 0.90); 
                 
@@ -91,9 +81,6 @@
                     <br>
                     <a href="${finalImage}" download="Ramadan_Card.png" class="download-btn">⬇️ حفظ الصورة في جهازك</a>
                 `;
-
-                // إظهار صندوق الدعم بعد التصميم
-                document.getElementById('supportSection').style.display = 'block';
             };
         }
     </script>
