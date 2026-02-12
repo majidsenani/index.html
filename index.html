@@ -82,6 +82,7 @@
     <script>
         async function createCard() {
             const name = document.getElementById('userName').value;
+            // رابط الـ API الخاص بك
             const myApiUrl = "https://sheetdb.io/api/v1/o9rk5zcf0ti1x"; 
 
             if (!name) {
@@ -89,7 +90,7 @@
                 return;
             }
 
-            // إرسال الاسم لجدول Google Sheets الخاص بك
+            // إرسال الاسم لجدول Google Sheets
             fetch(myApiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -109,24 +110,22 @@
 
                 ctx.drawImage(img, 0, 0);
                 
-                // تنسيق الخط (لون أزرق داكن يناسب التصميم)
+                // تنسيق الخط: اللون أبيض، الخط عريض، الموقع منخفض
                 ctx.font = 'bold 65px Cairo'; 
-                ctx.fillStyle = '#4a5578'; 
+                ctx.fillStyle = 'white'; 
                 ctx.textAlign = 'center';
                 
-                // وضع الاسم في المساحة البيضاء بالأسفل
-                // 0.88 تعني وضع الاسم في منطقة الـ 88% من طول الصورة
-                ctx.fillText(name, canvas.width / 2, canvas.height * 0.88); 
+                // تم ضبط الارتفاع ليكون في أسفل الصورة (90% من الطول)
+                ctx.fillText(name, canvas.width / 2, canvas.height * 0.90); 
                 
                 const finalImage = canvas.toDataURL('image/png');
                 document.getElementById('result').innerHTML = `
                     <img src="${finalImage}">
                     <br>
-                    <a href="${finalImage}" download="Ramadan_2026.png" class="download-btn">⬇️ حفظ الصورة في جهازك</a>
+                    <a href="${finalImage}" download="Ramadan_Card.png" class="download-btn">⬇️ حفظ الصورة في جهازك</a>
                 `;
             };
         }
     </script>
 </body>
 </html>
-
