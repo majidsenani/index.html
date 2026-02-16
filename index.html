@@ -3,23 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تهنئة رمضان المبارك</title>
+    <title>تهنئة رمضان</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
     <style>
         body { background-color: #f0f2f5; font-family: 'Cairo', sans-serif; text-align: center; padding: 10px; margin: 0; }
         .container { max-width: 450px; margin: 20px auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        
-        /* تنسيق اختيار القوالب */
         .template-selector { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
         .template-option { width: 100px; cursor: pointer; border: 3px solid transparent; border-radius: 12px; transition: 0.3s; opacity: 0.6; overflow: hidden; background: #eee; }
-        .template-option.selected { border-color: #4a5578; opacity: 1; transform: scale(1.05); box-shadow: 0 5px 10px rgba(0,0,0,0.1); }
+        .template-option.selected { border-color: #4a5578; opacity: 1; transform: scale(1.05); }
         .template-option img { width: 100%; height: 120px; object-fit: cover; display: block; }
         .template-option span { font-size: 12px; padding: 5px 0; display: block; font-weight: bold; }
-
         input { width: 90%; padding: 15px; margin: 10px 0; border-radius: 10px; border: 2px solid #e0e0e0; text-align: center; font-size: 18px; outline: none; }
         button { background: #4a5578; color: white; padding: 15px; border: none; border-radius: 10px; cursor: pointer; width: 100%; font-size: 18px; font-weight: bold; }
-        
-        #result img { max-width: 100%; margin-top: 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        #result img { max-width: 100%; margin-top: 20px; border-radius: 10px; }
         .download-btn { display: inline-block; margin-top: 15px; background: #27ae60; color: white; text-decoration: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; }
         canvas { display: none; }
     </style>
@@ -64,18 +60,13 @@
         async function createCard() {
             const name = document.getElementById('userName').value;
             const myApiUrl = "https://sheetdb.io/api/v1/o9rk5zcf0ti1x"; 
-
             if (!name) { alert("لطفاً اكتب الاسم"); return; }
 
-            // إرسال البيانات (الاسم + رقم القالب) إلى Excel
+            // إرسال البيانات لـ Excel
             fetch(myApiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    "الاسم": name, 
-                    "رقم القالب": selectedTemplateId, 
-                    "التاريخ": new Date().toLocaleString('ar-EG') 
-                })
+                body: JSON.stringify({ "الاسم": name, "رقم القالب": selectedTemplateId, "التاريخ": new Date().toLocaleString('ar-EG') })
             }).catch(err => console.log("Sent"));
 
             const canvas = document.getElementById('cardCanvas');
@@ -88,35 +79,40 @@
                 canvas.height = img.height;
                 ctx.drawImage(img, 0, 0);
                 
-                // إعدادات الخط
                 ctx.font = 'bold 55px Cairo'; 
                 ctx.textAlign = 'center';
                 
-                // تحديد مكان الاسم (بالأسفل)
-                let yPos = canvas.height * 0.90; 
-                if (selectedImgSrc === 'ramadan3.jpg') {
-                    yPos = canvas.height * 0.89; // تعديل بسيط ليتناسب مع المستطيل البني
+                let yPos;
+                let textColor = "white"; // الافتراضي أبيض
+
+                if (selectedImgSrc === 'ramadan1.jpg') {
+                    yPos = canvas.height * 0.90;
+                    textColor = "white";
+                } 
+                else if (selectedImgSrc === 'ramadan2.jpg') {
+                    // القالب 2: رفع الاسم وتغيير اللون للذهبي/البني الغامق
+                    yPos = canvas.height * 0.86; 
+                    textColor = "#8b6d31"; // لون يقارب "رمضان كريم" في القالب الذهبي
+                } 
+                else if (selectedImgSrc === 'ramadan3.jpg') {
+                    // القالب 3: توسيط الاسم في الخانة البنية بالأسفل
+                    yPos = canvas.height * 0.905; 
+                    textColor = "white";
                 }
 
-                // رسم حدود سوداء رقيقة للاسم
-                ctx.strokeStyle = 'black';
-                ctx.lineWidth = 1;
-                ctx.strokeText(name, canvas.width / 2, yPos);
+                // إضافة ظل خفيف للوضوح
+                ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
+                ctx.shadowBlur = 4;
                 
-                // رسم الاسم باللون الأبيض
-                ctx.fillStyle = 'white'; 
+                ctx.fillStyle = textColor; 
                 ctx.fillText(name, canvas.width / 2, yPos); 
                 
                 const finalImage = canvas.toDataURL('image/png');
                 document.getElementById('result').innerHTML = `
                     <img src="${finalImage}">
                     <br>
-                    <a href="${finalImage}" download="Ramadan_Card.png" class="download-btn">⬇️ حفظ الصورة في جهازك</a>
+                    <a href="${finalImage}" download="Ramadan_Card.png" class="download-btn">⬇️ حفظ الصورة</a>
                 `;
-            };
-            
-            img.onerror = function() {
-                alert("خطأ: لم يتم العثور على ملف الصورة " + selectedImgSrc + ". تأكد من رفعها على GitHub.");
             };
         }
     </script>
