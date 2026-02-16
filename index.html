@@ -85,17 +85,17 @@
                 let textColor;
 
                 if (selectedImgSrc === 'ramadan1.jpg') {
-                    yPos = canvas.height * 0.90; // تحت (قالب 1)
+                    yPos = canvas.height * 0.90;
                     textColor = "white";
                 } 
                 else if (selectedImgSrc === 'ramadan2.jpg') {
-                    yPos = canvas.height * 0.81; // وسط الخانة البيضاء (قالب 2)
+                    yPos = canvas.height * 0.81;
                     textColor = "#8b6d31"; 
                 } 
                 else if (selectedImgSrc === 'ramadan3.jpg') {
-                    // التعديل المطلوب: رفع الاسم ليكون في المنطقة التي حددتها بالأحمر
-                    yPos = canvas.height * 0.65; // رفعنا الاسم للأعلى ليتوسط الفراغ المطلوب
-                    textColor = "#8b6d31"; // لون ذهبي غامق متناسق مع العبارة
+                    // التعديل النهائي: تنزيل الاسم ليكون تحت كلمة "رمضان" الكبيرة
+                    yPos = canvas.height * 0.94; 
+                    textColor = "#5d5c3c"; // اللون الزيتي الغامق
                 }
 
                 ctx.fillStyle = textColor; 
@@ -112,4 +112,3 @@
     </script>
 </body>
 </html>
-
