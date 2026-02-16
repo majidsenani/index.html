@@ -3,19 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تهنئة رمضان</title>
+    <title>تهنئة رمضان المبارك</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
     <style>
         body { background-color: #f0f2f5; font-family: 'Cairo', sans-serif; text-align: center; padding: 10px; margin: 0; }
         .container { max-width: 450px; margin: 20px auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        
+        /* تنسيق اختيار القوالب */
         .template-selector { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
         .template-option { width: 100px; cursor: pointer; border: 3px solid transparent; border-radius: 12px; transition: 0.3s; opacity: 0.6; overflow: hidden; background: #eee; }
         .template-option.selected { border-color: #4a5578; opacity: 1; transform: scale(1.05); box-shadow: 0 5px 10px rgba(0,0,0,0.1); }
         .template-option img { width: 100%; height: 120px; object-fit: cover; display: block; }
         .template-option span { font-size: 12px; padding: 5px 0; display: block; font-weight: bold; }
+
         input { width: 90%; padding: 15px; margin: 10px 0; border-radius: 10px; border: 2px solid #e0e0e0; text-align: center; font-size: 18px; outline: none; }
         button { background: #4a5578; color: white; padding: 15px; border: none; border-radius: 10px; cursor: pointer; width: 100%; font-size: 18px; font-weight: bold; }
-        #result img { max-width: 100%; margin-top: 20px; border-radius: 10px; }
+        
+        #result img { max-width: 100%; margin-top: 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .download-btn { display: inline-block; margin-top: 15px; background: #27ae60; color: white; text-decoration: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; }
         canvas { display: none; }
     </style>
@@ -25,16 +29,16 @@
     <div class="container">
         <h2>🌙 اختر قالبك المفضل</h2>
         <div class="template-selector">
-            <div class="template-option selected" data-id="1" onclick="selectTemplate('ramadan.jpg', this)">
-                <img src="ramadan.jpg" alt="قالب 1">
+            <div class="template-option selected" data-id="1" onclick="selectTemplate('ramadan1.jpg', this)">
+                <img src="ramadan1.jpg">
                 <span>قالب 1</span>
             </div>
             <div class="template-option" data-id="2" onclick="selectTemplate('ramadan2.jpg', this)">
-                <img src="ramadan2.jpg" alt="قالب 2">
+                <img src="ramadan2.jpg">
                 <span>قالب 2</span>
             </div>
             <div class="template-option" data-id="3" onclick="selectTemplate('ramadan3.jpg', this)">
-                <img src="ramadan3.jpg" alt="قالب 3">
+                <img src="ramadan3.jpg">
                 <span>قالب 3</span>
             </div>
         </div>
@@ -47,7 +51,7 @@
     <canvas id="cardCanvas"></canvas>
 
     <script>
-        let selectedImgSrc = 'ramadan.jpg';
+        let selectedImgSrc = 'ramadan1.jpg';
         let selectedTemplateId = '1';
 
         function selectTemplate(imgName, element) {
@@ -63,7 +67,7 @@
 
             if (!name) { alert("لطفاً اكتب الاسم"); return; }
 
-            // إرسال البيانات لـ Excel (الاسم + رقم القالب)
+            // إرسال البيانات (الاسم + رقم القالب) إلى Excel
             fetch(myApiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -84,21 +88,22 @@
                 canvas.height = img.height;
                 ctx.drawImage(img, 0, 0);
                 
+                // إعدادات الخط
                 ctx.font = 'bold 55px Cairo'; 
                 ctx.textAlign = 'center';
                 
-                // ضبط مكان الاسم (القالب 3 مخصص للصورة الجديدة)
+                // تحديد مكان الاسم (بالأسفل)
                 let yPos = canvas.height * 0.90; 
                 if (selectedImgSrc === 'ramadan3.jpg') {
-                    yPos = canvas.height * 0.89; 
+                    yPos = canvas.height * 0.89; // تعديل بسيط ليتناسب مع المستطيل البني
                 }
 
-                // حدود سوداء رقيقة
+                // رسم حدود سوداء رقيقة للاسم
                 ctx.strokeStyle = 'black';
                 ctx.lineWidth = 1;
                 ctx.strokeText(name, canvas.width / 2, yPos);
                 
-                // اسم أبيض
+                // رسم الاسم باللون الأبيض
                 ctx.fillStyle = 'white'; 
                 ctx.fillText(name, canvas.width / 2, yPos); 
                 
@@ -106,8 +111,12 @@
                 document.getElementById('result').innerHTML = `
                     <img src="${finalImage}">
                     <br>
-                    <a href="${finalImage}" download="Ramadan_Card.png" class="download-btn">⬇️ حفظ الصورة</a>
+                    <a href="${finalImage}" download="Ramadan_Card.png" class="download-btn">⬇️ حفظ الصورة في جهازك</a>
                 `;
+            };
+            
+            img.onerror = function() {
+                alert("خطأ: لم يتم العثور على ملف الصورة " + selectedImgSrc + ". تأكد من رفعها على GitHub.");
             };
         }
     </script>
