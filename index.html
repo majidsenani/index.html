@@ -25,8 +25,8 @@
     <div class="container">
         <h2>🌙 اختر قالبك المفضل</h2>
         <div class="template-selector">
-            <div class="template-option selected" data-id="1" onclick="selectTemplate('ramadan1.jpg', this)">
-                <img src="ramadan1.jpg">
+            <div class="template-option selected" data-id="1" onclick="selectTemplate('ramadan.jpg', this)">
+                <img src="ramadan.jpg">
                 <span>قالب 1</span>
             </div>
             <div class="template-option" data-id="2" onclick="selectTemplate('ramadan2.jpg', this)">
@@ -47,7 +47,7 @@
     <canvas id="cardCanvas"></canvas>
 
     <script>
-        let selectedImgSrc = 'ramadan1.jpg';
+        let selectedImgSrc = 'ramadan.jpg';
         let selectedTemplateId = '1';
 
         function selectTemplate(imgName, element) {
@@ -62,7 +62,6 @@
             const myApiUrl = "https://sheetdb.io/api/v1/o9rk5zcf0ti1x"; 
             if (!name) { alert("لطفاً اكتب الاسم"); return; }
 
-            // إرسال البيانات لـ Excel
             fetch(myApiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -83,27 +82,21 @@
                 ctx.textAlign = 'center';
                 
                 let yPos;
-                let textColor = "white"; // الافتراضي أبيض
+                let textColor = "white";
 
-                if (selectedImgSrc === 'ramadan1.jpg') {
-                    yPos = canvas.height * 0.90;
-                    textColor = "white";
+                if (selectedImgSrc === 'ramadan.jpg') {
+                    yPos = canvas.height * 0.90; // القالب 1 (تحت)
                 } 
                 else if (selectedImgSrc === 'ramadan2.jpg') {
-                    // القالب 2: رفع الاسم وتغيير اللون للذهبي/البني الغامق
-                    yPos = canvas.height * 0.86; 
-                    textColor = "#8b6d31"; // لون يقارب "رمضان كريم" في القالب الذهبي
+                    // القالب 2: تم الرفع إلى 0.79 ليتوسط الخانة البيضاء تماماً
+                    yPos = canvas.height * 0.79; 
+                    textColor = "#8b6d31"; // لون ذهبي متناسق
                 } 
                 else if (selectedImgSrc === 'ramadan3.jpg') {
-                    // القالب 3: توسيط الاسم في الخانة البنية بالأسفل
-                    yPos = canvas.height * 0.905; 
-                    textColor = "white";
+                    // القالب 3: توسيط دقيق في الخانة البنية
+                    yPos = canvas.height * 0.825; 
                 }
 
-                // إضافة ظل خفيف للوضوح
-                ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
-                ctx.shadowBlur = 4;
-                
                 ctx.fillStyle = textColor; 
                 ctx.fillText(name, canvas.width / 2, yPos); 
                 
