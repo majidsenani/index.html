@@ -82,20 +82,20 @@
                 ctx.textAlign = 'center';
                 
                 let yPos;
-                let textColor = "white";
+                let textColor;
 
                 if (selectedImgSrc === 'ramadan1.jpg') {
-                    yPos = canvas.height * 0.90;
+                    yPos = canvas.height * 0.90; // تحت (قالب 1)
                     textColor = "white";
                 } 
                 else if (selectedImgSrc === 'ramadan2.jpg') {
-                    yPos = canvas.height * 0.81; // القالب 2 (توسط الخانة البيضاء)
+                    yPos = canvas.height * 0.81; // وسط الخانة البيضاء (قالب 2)
                     textColor = "#8b6d31"; 
                 } 
                 else if (selectedImgSrc === 'ramadan3.jpg') {
-                    // القالب 3: الاسم تحت "رمضان كريم" مباشرة
-                    yPos = canvas.height * 0.72; // تم الرفع ليكون تحت العبارة مباشرة
-                    textColor = "#5d5c3c"; // لون زيتي غامق يطابق نص القالب الجديد
+                    // التعديل المطلوب: رفع الاسم ليكون في المنطقة التي حددتها بالأحمر
+                    yPos = canvas.height * 0.65; // رفعنا الاسم للأعلى ليتوسط الفراغ المطلوب
+                    textColor = "#8b6d31"; // لون ذهبي غامق متناسق مع العبارة
                 }
 
                 ctx.fillStyle = textColor; 
@@ -112,3 +112,4 @@
     </script>
 </body>
 </html>
+
