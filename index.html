@@ -25,8 +25,8 @@
     <div class="container">
         <h2>🌙 اختر قالبك المفضل</h2>
         <div class="template-selector">
-            <div class="template-option selected" data-id="1" onclick="selectTemplate('ramadan.jpg', this)">
-                <img src="ramadan.jpg">
+            <div class="template-option selected" data-id="1" onclick="selectTemplate('ramadan1.jpg', this)">
+                <img src="ramadan1.jpg">
                 <span>قالب 1</span>
             </div>
             <div class="template-option" data-id="2" onclick="selectTemplate('ramadan2.jpg', this)">
@@ -47,7 +47,7 @@
     <canvas id="cardCanvas"></canvas>
 
     <script>
-        let selectedImgSrc = 'ramadan.jpg';
+        let selectedImgSrc = 'ramadan1.jpg';
         let selectedTemplateId = '1';
 
         function selectTemplate(imgName, element) {
@@ -84,17 +84,18 @@
                 let yPos;
                 let textColor = "white";
 
-                if (selectedImgSrc === 'ramadan.jpg') {
-                    yPos = canvas.height * 0.90; // القالب 1 (تحت)
+                if (selectedImgSrc === 'ramadan1.jpg') {
+                    // قالب 1: الاسم بالأسفل
+                    yPos = canvas.height * 0.90;
                 } 
                 else if (selectedImgSrc === 'ramadan2.jpg') {
-                    // القالب 2: تم الرفع إلى 0.79 ليتوسط الخانة البيضاء تماماً
-                    yPos = canvas.height * 0.79; 
-                    textColor = "#8b6d31"; // لون ذهبي متناسق
+                    // قالب 2: تم التنزيل قليلاً ليتوسط الخانة البيضاء
+                    yPos = canvas.height * 0.81; 
+                    textColor = "#8b6d31"; 
                 } 
                 else if (selectedImgSrc === 'ramadan3.jpg') {
-                    // القالب 3: توسيط دقيق في الخانة البنية
-                    yPos = canvas.height * 0.825; 
+                    // قالب 3: تم التنزيل ليكون داخل المستطيل الملون تماماً
+                    yPos = canvas.height * 0.92; 
                 }
 
                 ctx.fillStyle = textColor; 
