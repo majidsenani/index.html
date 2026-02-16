@@ -85,17 +85,17 @@
                 let textColor = "white";
 
                 if (selectedImgSrc === 'ramadan1.jpg') {
-                    // قالب 1: الاسم بالأسفل
                     yPos = canvas.height * 0.90;
+                    textColor = "white";
                 } 
                 else if (selectedImgSrc === 'ramadan2.jpg') {
-                    // قالب 2: تم التنزيل قليلاً ليتوسط الخانة البيضاء
-                    yPos = canvas.height * 0.81; 
+                    yPos = canvas.height * 0.81; // القالب 2 (توسط الخانة البيضاء)
                     textColor = "#8b6d31"; 
                 } 
                 else if (selectedImgSrc === 'ramadan3.jpg') {
-                    // قالب 3: تم التنزيل ليكون داخل المستطيل الملون تماماً
-                    yPos = canvas.height * 0.92; 
+                    // القالب 3: الاسم تحت "رمضان كريم" مباشرة
+                    yPos = canvas.height * 0.72; // تم الرفع ليكون تحت العبارة مباشرة
+                    textColor = "#5d5c3c"; // لون زيتي غامق يطابق نص القالب الجديد
                 }
 
                 ctx.fillStyle = textColor; 
