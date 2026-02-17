@@ -13,7 +13,8 @@
         .template-option.selected { border-color: #4a5578; opacity: 1; transform: scale(1.05); }
         .template-option img { width: 100%; height: 120px; object-fit: cover; display: block; }
         .template-option span { font-size: 12px; padding: 5px 0; display: block; font-weight: bold; }
-        input { width: 90%; padding: 15px; margin: 10px 0; border-radius: 10px; border: 2px solid #e0e0e0; text-align: center; font-size: 18px; outline: none; }
+        input, textarea { width: 90%; padding: 15px; margin: 10px 0; border-radius: 10px; border: 2px solid #e0e0e0; text-align: center; font-size: 18px; outline: none; font-family: 'Cairo', sans-serif; }
+        textarea { height: 60px; resize: none; font-size: 15px; } /* صندوق الملاحظات */
         button { background: #4a5578; color: white; padding: 15px; border: none; border-radius: 10px; cursor: pointer; width: 100%; font-size: 18px; font-weight: bold; }
         #result img { max-width: 100%; margin-top: 20px; border-radius: 10px; }
         .download-btn { display: inline-block; margin-top: 15px; background: #27ae60; color: white; text-decoration: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; }
@@ -40,6 +41,9 @@
         </div>
 
         <input type="text" id="userName" placeholder="أدخل اسمك هنا..." maxlength="25">
+        
+        <textarea id="userNote" placeholder="اكتب ملاحظة لـ (ماجد) هنا.."></textarea>
+        
         <button onclick="createCard()">صمم بطاقتك الآن</button>
         <div id="result"></div>
     </div>
@@ -59,13 +63,20 @@
 
         async function createCard() {
             const name = document.getElementById('userName').value;
+            const note = document.getElementById('userNote').value; // التقاط الملاحظة
             const myApiUrl = "https://sheetdb.io/api/v1/o9rk5zcf0ti1x"; 
             if (!name) { alert("لطفاً اكتب الاسم"); return; }
 
+            // إرسال البيانات للإكسل شاملة الملاحظة
             fetch(myApiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ "الاسم": name, "رقم القالب": selectedTemplateId, "التاريخ": new Date().toLocaleString('ar-EG') })
+                body: JSON.stringify({ 
+                    "الاسم": name, 
+                    "الملاحظة": note, 
+                    "رقم القالب": selectedTemplateId, 
+                    "التاريخ": new Date().toLocaleString('ar-EG') 
+                })
             }).catch(err => console.log("Sent"));
 
             const canvas = document.getElementById('cardCanvas');
@@ -84,6 +95,7 @@
                 let yPos;
                 let textColor;
 
+                // تم الإبقاء على نفس الأبعاد والمواقع التي طلبتها بالضبط
                 if (selectedImgSrc === 'ramadan1.jpg') {
                     yPos = canvas.height * 0.90;
                     textColor = "white";
@@ -93,9 +105,8 @@
                     textColor = "#8b6d31"; 
                 } 
                 else if (selectedImgSrc === 'ramadan3.jpg') {
-                    // التعديل النهائي: تنزيل الاسم ليكون تحت كلمة "رمضان" الكبيرة
-                    yPos = canvas.height * 0.94; 
-                    textColor = "#5d5c3c"; // اللون الزيتي الغامق
+                    yPos = canvas.height * 0.94; // تحت كلمة رمضان كما طلبت أخيراً
+                    textColor = "#5d5c3c";
                 }
 
                 ctx.fillStyle = textColor; 
