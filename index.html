@@ -3,123 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تهنئة رمضان</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
+    <title>\u0628\u0637\u0627\u0642\u0627\u062a \u062a\u0647\u0646\u0626\u0629 \u0627\u0644\u0639\u064a\u062f</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #f0f2f5; font-family: 'Cairo', sans-serif; text-align: center; padding: 10px; margin: 0; }
-        .container { max-width: 450px; margin: 20px auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .template-selector { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
-        .template-option { width: 100px; cursor: pointer; border: 3px solid transparent; border-radius: 12px; transition: 0.3s; opacity: 0.6; overflow: hidden; background: #eee; }
-        .template-option.selected { border-color: #4a5578; opacity: 1; transform: scale(1.05); }
-        .template-option img { width: 100%; height: 120px; object-fit: cover; display: block; }
-        .template-option span { font-size: 12px; padding: 5px 0; display: block; font-weight: bold; }
-        input, textarea { width: 90%; padding: 15px; margin: 10px 0; border-radius: 10px; border: 2px solid #e0e0e0; text-align: center; font-size: 18px; outline: none; font-family: 'Cairo', sans-serif; }
-        textarea { height: 60px; resize: none; font-size: 15px; } /* صندوق الملاحظات */
-        button { background: #4a5578; color: white; padding: 15px; border: none; border-radius: 10px; cursor: pointer; width: 100%; font-size: 18px; font-weight: bold; }
-        #result img { max-width: 100%; margin-top: 20px; border-radius: 10px; }
-        .download-btn { display: inline-block; margin-top: 15px; background: #27ae60; color: white; text-decoration: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; }
-        canvas { display: none; }
-    </style>
-</head>
-<body>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    <div class="container">
-        <h2>🌙 اختر قالبك المفضل</h2>
-        <div class="template-selector">
-            <div class="template-option selected" data-id="1" onclick="selectTemplate('ramadan1.jpg', this)">
-                <img src="ramadan1.jpg">
-                <span>قالب 1</span>
-            </div>
-            <div class="template-option" data-id="2" onclick="selectTemplate('ramadan2.jpg', this)">
-                <img src="ramadan2.jpg">
-                <span>قالب 2</span>
-            </div>
-            <div class="template-option" data-id="3" onclick="selectTemplate('ramadan3.jpg', this)">
-                <img src="ramadan3.jpg">
-                <span>قالب 3</span>
-            </div>
-        </div>
-
-        <input type="text" id="userName" placeholder="أدخل اسمك هنا..." maxlength="25">
-        
-        <textarea id="userNote" placeholder="اكتب ملاحظة لـ (ماجد) هنا.."></textarea>
-        
-        <button onclick="createCard()">صمم بطاقتك الآن</button>
-        <div id="result"></div>
-    </div>
-
-    <canvas id="cardCanvas"></canvas>
-
-    <script>
-        let selectedImgSrc = 'ramadan1.jpg';
-        let selectedTemplateId = '1';
-
-        function selectTemplate(imgName, element) {
-            selectedImgSrc = imgName;
-            selectedTemplateId = element.getAttribute('data-id');
-            document.querySelectorAll('.template-option').forEach(el => el.classList.remove('selected'));
-            element.classList.add('selected');
+        body {
+            background: linear-gradient(135deg, #0f2027, #1a3a2a, #0f2027);
+            min-height: 100vh;
+            font-family: 'Tajawal', sans-serif;
+            padding: 20px 15px 40px;
+            color: #fff;
         }
 
-        async function createCard() {
-            const name = document.getElementById('userName').value;
-            const note = document.getElementById('userNote').value; // التقاط الملاحظة
-            const myApiUrl = "https://sheetdb.io/api/v1/o9rk5zcf0ti1x"; 
-            if (!name) { alert("لطفاً اكتب الاسم"); return; }
-
-            // إرسال البيانات للإكسل شاملة الملاحظة
-            fetch(myApiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    "الاسم": name, 
-                    "الملاحظة": note, 
-                    "رقم القالب": selectedTemplateId, 
-                    "التاريخ": new Date().toLocaleString('ar-EG') 
-                })
-            }).catch(err => console.log("Sent"));
-
-            const canvas = document.getElementById('cardCanvas');
-            const ctx = canvas.getContext('2d');
-            const img = new Image();
-            img.src = selectedImgSrc; 
-            
-            img.onload = function() {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0);
-                
-                ctx.font = 'bold 55px Cairo'; 
-                ctx.textAlign = 'center';
-                
-                let yPos;
-                let textColor;
-
-                // تم الإبقاء على نفس الأبعاد والمواقع التي طلبتها بالضبط
-                if (selectedImgSrc === 'ramadan1.jpg') {
-                    yPos = canvas.height * 0.90;
-                    textColor = "white";
-                } 
-                else if (selectedImgSrc === 'ramadan2.jpg') {
-                    yPos = canvas.height * 0.81;
-                    textColor = "#8b6d31"; 
-                } 
-                else if (selectedImgSrc === 'ramadan3.jpg') {
-                    yPos = canvas.height * 0.94; // تحت كلمة رمضان كما طلبت أخيراً
-                    textColor = "#5d5c3c";
-                }
-
-                ctx.fillStyle = textColor; 
-                ctx.fillText(name, canvas.width / 2, yPos); 
-                
-                const finalImage = canvas.toDataURL('image/png');
-                document.getElementById('result').innerHTML = `
-                    <img src="${finalImage}">
-                    <br>
-                    <a href="${finalImage}" download="Ramadan_Card.png" class="download-btn">⬇️ حفظ الصورة</a>
-                `;
-            };
+        .header {
+            text-align: center;
+            padding: 30px 0 20px;
         }
-    </script>
-</body>
-</html>
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #C9A84C;
+            letter-spacing: 1px;
+            text-shadow: 0 0 30px rgba(201,168,76,0.4);
+        }
+
+        .header p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 6px;
+        }
+
+        .container {
+            max-width: 460px;
+            margin: 0 auto;
+        }
+
+        /* Template Selector */
+        .section-label {
+            font-size: 13px;
+            color: rgba(255,255,255,0.45);
+            margin-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .template-grid {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .template-card {
+            flex: 1;
+            cursor: pointer;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 2.5px solid transparent;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.05);
+            position: relative;
+        }
+
+        .template-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(201,168,76,0.5);
+        }
+
+        .template-card.selected {
+            border-color: #C9A84C;
+            box-shadow: 0 0 20px rgba(201,168,76,0.3);
+        }
+
+        .template-card img {
+            width: 100%;
+            height: 130px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .template-card .check {
+            display: none;
+            position: absolute;
+            top: 7px;
+            left: 7px;
+            width: 22px;
+            height: 22px;
+            background: #C9A84C;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .template-card.selected .check {
+            display: flex;
+        }
+
+        .template-card span {
+            display: block;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 8px 0;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .template-card.selected span {
+            color: #C9A84C;
+        }
+
+        /* Input Fields */
+        .input-group {
+            margin-bottom: 14px;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 16px 
